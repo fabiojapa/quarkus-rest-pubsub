@@ -40,10 +40,6 @@
       <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.quarkiverse.googlecloudservices</groupId>
-      <artifactId>quarkus-google-cloud-pubsub</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
     </dependency>
@@ -54,15 +50,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-openapi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>nl.big-o</groupId>
-      <artifactId>liqp</artifactId>
-      <version>0.8.5.3</version>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-spring-cache</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
