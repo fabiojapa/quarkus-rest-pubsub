@@ -14,7 +14,6 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -45,7 +44,6 @@ public class GreetingResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String hello(JsonNode jsonNode) throws InterruptedException, IOException {
         File file = testLiqp.getFile("liquid/test.liquid");
-        testLiqp.getFile("liquid/test.liquid");
         testLiqp.getFile("liquid/test.liquid");
 
         //Read file
