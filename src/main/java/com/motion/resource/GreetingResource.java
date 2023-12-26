@@ -1,4 +1,4 @@
-package com.motion;
+package com.motion.resource;
 
 import static io.quarkus.arc.ComponentsProvider.LOG;
 
@@ -8,11 +8,11 @@ import com.google.api.core.ApiFutureCallback;
 import com.google.api.core.ApiFutures;
 import com.google.api.gax.core.CredentialsProvider;
 import com.google.cloud.pubsub.v1.Publisher;
-import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.TopicName;
+import com.motion.TestLiqp;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -37,8 +37,6 @@ public class GreetingResource {
 
     @Inject
     CredentialsProvider credentialsProvider;
-
-    private Subscriber subscriber;
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
