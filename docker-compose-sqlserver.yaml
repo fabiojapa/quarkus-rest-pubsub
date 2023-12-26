@@ -12,12 +12,16 @@ services:
       - 9092:9092
     links:
       - zookeeper
+    depends_on:
+      - zookeeper
     environment:
       - ZOOKEEPER_CONNECT=zookeeper:2181
   kafdrop:
     image: obsidiandynamics/kafdrop
     ports:
       - "19000:9000"
+    depends_on:
+      - kafka
     environment:
       KAFKA_BROKERCONNECT: kafka:9092
   sqlserver:
@@ -29,11 +33,38 @@ services:
       - MSSQL_PID=Standard
       - SA_PASSWORD=Password!
       - MSSQL_AGENT_ENABLED=true
+  mongo:
+    image: "mongo:7.0.0"
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    restart: always
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 18081:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    links:
+      - mongo
+    depends_on:
+      - mongo
   connect:
     image: quay.io/debezium/connect:${DEBEZIUM_VERSION}
     ports:
       - 8083:8083
     links:
+      - kafka
+      - sqlserver
+    depends_on:
       - kafka
       - sqlserver
     environment:

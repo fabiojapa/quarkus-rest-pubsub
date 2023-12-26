@@ -34,6 +34,8 @@ docker-compose -f docker-compose-sqlserver.yaml exec kafka /kafka/bin/kafka-cons
 # Modify records in the database via SQL Server client (do not forget to add `GO` command to execute the statement)
 docker-compose -f docker-compose-sqlserver.yaml exec sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -d testDB'
 
+curl -X POST -H "Content-Type: application/json" -d @sink-connector.json http://localhost:8083/connectors | jq
+
 # Shut down the cluster
 docker-compose -f docker-compose-sqlserver.yaml down
 ```
@@ -53,3 +55,8 @@ Also expose the debugging port 5005 under `ports`:
     - 5005:5005
 
 You can then establish a remote debugging session from your IDE on localhost:5005.
+
+
+kafdrop: http://localhost:19000/
+kafka-connectors: http://localhost:8083/connectors
+mongo-express: http://localhost:18081/
