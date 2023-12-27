@@ -11,8 +11,8 @@ do
 done
 sleep 5
 
-envsubst < /connector/register-sqlserver.json > /connector/register-sqlserver-temp.json
-envsubst < /connector/sink-connector.json > /connector/sink-connector-temp.json
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://connect:8083/connectors/ -d @/connector/register-sqlserver-temp.json
+envsubst < /connector/register-sqlserver.json > register-sqlserver-temp.json
+envsubst < /connector/sink-connector.json > sink-connector-temp.json
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://connect:8083/connectors/ -d @register-sqlserver-temp.json
 
-curl -X POST -H "Content-Type: application/json" -d @/connector/sink-connector-temp.json http://connect:8083/connectors
+curl -X POST -H "Content-Type: application/json" -d @sink-connector-temp.json http://connect:8083/connectors
