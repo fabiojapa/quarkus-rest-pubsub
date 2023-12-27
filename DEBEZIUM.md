@@ -1,7 +1,7 @@
 # Debezium Tutorial
 from [debezium](https://github.com/debezium/debezium-examples/blob/main/tutorial/README.md)
 
-This demo automatically deploys the topology of services as defined in the [Debezium Tutorial](https://debezium.io/documentation/reference/stable/tutorial.html).
+This demo automatically deploys the topology of services as defined in the [Debezium Tutorial](https://debezium.io/documentation/reference/stable/tutorial.html), but additionally includes a Mongodb and MongoSinkConnector.
 
 - [Debezium Tutorial](#debezium-tutorial)
     
@@ -48,3 +48,6 @@ curl -X POST -H "Content-Type: application/json" -d @etc/connector/sink-connecto
 [kafdrop](http://localhost:19000/)
 [kafka-connectors](http://localhost:8083/connectors)
 [mongo-express](http://localhost:18081/)
+
+## References
+[Debezium Architecture](https://debezium.io/documentation/reference/stable/architecture.html)
