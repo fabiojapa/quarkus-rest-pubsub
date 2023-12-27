@@ -24,6 +24,15 @@ GO
 docker-compose -f docker-compose-sqlserver.yaml down
 ```
 
+
+
+## Debugging
+
+[kafdrop](http://localhost:19000/)
+[kafka-connectors](http://localhost:8083/connectors)
+[mongo-express](http://localhost:18081/)
+
+
 ## Notes
 The installation is automated, but these are the commands in the automation:
 
@@ -41,13 +50,6 @@ export $(cat .env | xargs)
 envsubst < etc/connector/sink-connector.json > etc/connector/sink-connector-temp.json
 curl -X POST -H "Content-Type: application/json" -d @etc/connector/sink-connector-temp.json http://localhost:8083/connectors | jq
 ```
-
-
-## Debugging
-
-[kafdrop](http://localhost:19000/)
-[kafka-connectors](http://localhost:8083/connectors)
-[mongo-express](http://localhost:18081/)
 
 ## References
 [Debezium Architecture](https://debezium.io/documentation/reference/stable/architecture.html)
