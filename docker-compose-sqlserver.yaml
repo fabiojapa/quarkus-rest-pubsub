@@ -91,7 +91,7 @@ services:
     depends_on:
       - sqlserver
   setup-connectors:
-    image: ubuntu
+    image: denolehov/curl
     volumes:
       - ./etc/init/setup-connectors.sh:/setup-connectors.sh
       - ./etc/connector:/connector
