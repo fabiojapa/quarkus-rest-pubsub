@@ -15,7 +15,6 @@ This demo automatically deploys the topology of services as defined in the [Debe
 
 ```shell
 # Start the topology as defined in https://debezium.io/documentation/reference/stable/tutorial.html
-export DEBEZIUM_VERSION=2.5
 docker-compose -f docker-compose-sqlserver.yaml up
 
 # Initialize database and insert test data
@@ -35,7 +34,6 @@ curl -X POST -H "Content-Type: application/json" -d @etc/connector/sink-connecto
 
 # Modify records in the database via SQL Server client (do not forget to add `GO` command to execute the statement)
 docker-compose -f docker-compose-sqlserver.yaml exec sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -d testDB'
-
 
 # Shut down the cluster
 docker-compose -f docker-compose-sqlserver.yaml down
