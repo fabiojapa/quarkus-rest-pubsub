@@ -21,7 +21,9 @@ docker-compose -f docker-compose-sqlserver.yaml up
 cat etc/debezium-sqlserver-init/inventory.sql | docker-compose -f docker-compose-sqlserver.yaml exec -T sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD'
 
 # Start SQL Server connector
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @etc/connector/register-sqlserver.json
+export $(cat .env | xargs)
+envsubst < etc/connector/register-sqlserver.json > etc/connector/register-sqlserver-temp.json
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @etc/connector/register-sqlserver-temp.json
 
 # Consume messages from a Debezium topic
 #docker-compose -f docker-compose-sqlserver.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \
@@ -29,8 +31,9 @@ curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json"
 #    --from-beginning \
 #    --property print.key=true \
 #    --topic server1.testDB.dbo.customers
-
-curl -X POST -H "Content-Type: application/json" -d @etc/connector/sink-connector.json http://localhost:8083/connectors | jq
+export $(cat .env | xargs)
+envsubst < etc/connector/sink-connector.json > etc/connector/sink-connector-temp.json
+curl -X POST -H "Content-Type: application/json" -d @etc/connector/sink-connector-temp.json http://localhost:8083/connectors | jq
 
 # Modify records in the database via SQL Server client (do not forget to add `GO` command to execute the statement)
 docker-compose -f docker-compose-sqlserver.yaml exec sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -d testDB'
