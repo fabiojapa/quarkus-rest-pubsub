@@ -7,7 +7,7 @@
     "database.hostname" : "sqlserver",
     "database.port" : "1433",
     "database.user" : "sa",
-    "database.password" : "Password!",
+    "database.password" : "${SA_PASSWORD}",
     "database.names" : "testDB",
     "schema.history.internal.kafka.bootstrap.servers" : "kafka:9092",
     "schema.history.internal.kafka.topic": "schema-changes.inventory",

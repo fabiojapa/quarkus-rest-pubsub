@@ -38,7 +38,7 @@ services:
     container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
     ports:
       - "27017:27017"
     restart: always
@@ -52,7 +52,7 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGO_ROOT_PASSWORD
     links:
       - mongo
     depends_on:
@@ -91,10 +91,13 @@ services:
     depends_on:
       - sqlserver
   setup-connectors:
-    image: denolehov/curl
+    image: ubuntu
     volumes:
       - ./etc/init/setup-connectors.sh:/setup-connectors.sh
       - ./etc/connector:/connector
     command: /bin/bash /setup-connectors.sh
+    environment:
+      - MONGO_ROOT_PASSWORD=$MONGO_ROOT_PASSWORD
+      - SA_PASSWORD=$SA_PASSWORD
     depends_on:
       - connect
