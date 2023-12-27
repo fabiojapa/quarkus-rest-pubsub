@@ -80,7 +80,21 @@ services:
       - CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE=false
     volumes:
       - ./etc/connector/mongodb-kafka-connect-mongodb-1.11.1:/kafka/connect/mongo-connector
-# For testing newer connector versions, unpack the connector archive into this
-# directory and uncomment the lines below
-#    volumes:
-#     - ./debezium-connector-sqlserver:/kafka/connect/debezium-connector-sqlserver
+  sqlserver-script-executor:
+    image: mcr.microsoft.com/mssql-tools
+    volumes:
+      - ./etc/init/setup-sqlserver.sh:/setup-sqlserver.sh
+      - ./etc/debezium-sqlserver-init/inventory.sql:/scripts/inventory.sql
+    command: /bin/bash /setup-sqlserver.sh
+    environment:
+      - SA_PASSWORD=Password!
+    depends_on:
+      - sqlserver
+  setup-connectors:
+    image: ubuntu
+    volumes:
+      - ./etc/init/setup-connectors.sh:/setup-connectors.sh
+      - ./etc/connector:/connector
+    command: /bin/bash /setup-connectors.sh
+    depends_on:
+      - connect
