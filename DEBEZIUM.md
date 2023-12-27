@@ -15,14 +15,14 @@ This demo automatically deploys the topology of services as defined in the [Debe
 
 ```shell
 # Start the topology as defined in https://debezium.io/documentation/reference/stable/tutorial.html
-export DEBEZIUM_VERSION=2.1
+export DEBEZIUM_VERSION=2.5
 docker-compose -f docker-compose-sqlserver.yaml up
 
 # Initialize database and insert test data
-cat debezium-sqlserver-init/inventory.sql | docker-compose -f docker-compose-sqlserver.yaml exec -T sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD'
+cat etc/debezium-sqlserver-init/inventory.sql | docker-compose -f docker-compose-sqlserver.yaml exec -T sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD'
 
 # Start SQL Server connector
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-sqlserver.json
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @etc/connector/register-sqlserver.json
 
 # Consume messages from a Debezium topic
 docker-compose -f docker-compose-sqlserver.yaml exec kafka /kafka/bin/kafka-console-consumer.sh \
@@ -34,7 +34,7 @@ docker-compose -f docker-compose-sqlserver.yaml exec kafka /kafka/bin/kafka-cons
 # Modify records in the database via SQL Server client (do not forget to add `GO` command to execute the statement)
 docker-compose -f docker-compose-sqlserver.yaml exec sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -d testDB'
 
-curl -X POST -H "Content-Type: application/json" -d @sink-connector.json http://localhost:8083/connectors | jq
+curl -X POST -H "Content-Type: application/json" -d @etc/connector/sink-connector.json http://localhost:8083/connectors | jq
 
 # Shut down the cluster
 docker-compose -f docker-compose-sqlserver.yaml down
