@@ -26,7 +26,7 @@ public class GreetingSubscriber {
   private static final Logger LOG = Logger.getLogger(GreetingSubscriber.class);
 
 //  @ConfigProperty(name = "quarkus.google.cloud.project-id")
-  String projectId = "fabiojapa";// Inject the projectId property from application.properties
+  String projectId = "mit-sb-cloudservices-4588";// Inject the projectId property from application.properties
 
   private TopicName topicName;
   private Subscriber subscriber;

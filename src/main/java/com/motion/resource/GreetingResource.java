@@ -18,10 +18,19 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import org.springframework.util.StringUtils;
+
 import liqp.Template;
 
 @Path("/hello")
@@ -30,17 +39,32 @@ public class GreetingResource {
     @Inject
     private TestLiqp testLiqp;
 
-    String projectId = "fabiojapa";// Inject the projectId property from application.properties
+    String projectId = "mit-sb-cloudservices-4588";//"fabiojapa";// Inject the projectId property from application.properties
     //"mit-sb-cloudservices-4588"
 
     private TopicName topicName;
+
+    private Map<String, Integer> countMap = new HashMap<>();
 
     @Inject
     CredentialsProvider credentialsProvider;
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello(JsonNode jsonNode) throws InterruptedException, IOException {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response hello(JsonNode jsonNode) throws InterruptedException, IOException {
+        if (jsonNode.has("message") && jsonNode.get("message").has("data")) {
+            String code = jsonNode.get("message").get("data").asText();
+            byte[] bytes = Base64.getDecoder().decode(code);
+            code = new String(bytes, StandardCharsets.UTF_8);
+            if (countMap.get(code) == null) {
+                countMap.put(code, 0);
+            }
+            countMap.put(code, countMap.get(code) + 1);
+
+            LOG.infov("json: " + code);
+            LOG.infov("count: " + countMap.get(code));
+            return Response.status(Integer.parseInt(code)).build();
+        }
         File file = testLiqp.getFile("liquid/test.liquid");
         testLiqp.getFile("liquid/test.liquid");
 
@@ -74,7 +98,27 @@ public class GreetingResource {
             publisher.awaitTermination(1, TimeUnit.MINUTES);
         }
 
-        return rendered;
+        return Response.ok(rendered).build();
+    }
+
+    @POST
+    @Path("/http")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response helloHttp(JsonNode jsonNode) throws InterruptedException, IOException {
+        if (jsonNode.has("message") && jsonNode.get("message").has("data")) {
+            String code = jsonNode.get("message").get("data").asText();
+            byte[] bytes = Base64.getDecoder().decode(code);
+            code = new String(bytes, StandardCharsets.UTF_8);
+            if (countMap.get(code) == null) {
+                countMap.put(code, 0);
+            }
+            countMap.put(code, countMap.get(code) + 1);
+
+            LOG.infov("json: " + code);
+            LOG.infov("count: " + countMap.get(code));
+            return Response.status(Integer.parseInt(code)).build();
+        }
+        return Response.ok().build();
     }
 
     @POST
