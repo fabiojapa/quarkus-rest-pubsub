@@ -13,12 +13,20 @@ This demo automatically deploys the topology of services as defined in the [Debe
 
 ```shell
 # Start the topology as defined in https://debezium.io/documentation/reference/stable/tutorial.html
-docker-compose -f docker-compose-sqlserver.yaml up
+docker compose -f docker-compose-sqlserver.yaml up
 
+# Connect to SQL Server
+docker compose -f docker-compose-sqlserver.yaml exec sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -d testDB'
 # Modify records in the database via SQL Server client (do not forget to add `GO` command to execute the statement)
-docker-compose -f docker-compose-sqlserver.yaml exec sqlserver bash -c '/opt/mssql-tools/bin/sqlcmd -U sa -P $SA_PASSWORD -d testDB'
 INSERT INTO products(name,description,weight) VALUES ('test','xpto',3.14);
 GO
+
+# connect to mongo
+docker compose -f docker-compose-sqlserver.yaml exec  mongo mongosh --username root --password example
+# list records to see if data is flowing from sql server
+use local
+db.products.find()
+it
 
 # Shut down the cluster
 docker-compose -f docker-compose-sqlserver.yaml down
