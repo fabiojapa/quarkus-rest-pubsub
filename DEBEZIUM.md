@@ -28,9 +28,10 @@ docker-compose -f docker-compose-sqlserver.yaml down
 
 ## Debugging
 
-[kafdrop](http://localhost:19000/)
-[kafka-connectors](http://localhost:8083/connectors)
-[mongo-express](http://localhost:18081/)
+- [kafdrop](http://localhost:19000/)
+- [kafka-connectors](http://localhost:8083/connectors)
+- [mongo-express](http://localhost:18081/)
+  - admin / admin
 
 
 ## Notes
