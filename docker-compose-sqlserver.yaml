@@ -2,6 +2,7 @@ version: '2'
 services:
   zookeeper:
     image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
+    restart: always
 #    ports:
 #      - 2181:2181
 #      - 2888:2888
@@ -26,6 +27,7 @@ services:
       KAFKA_BROKERCONNECT: kafka:9092
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
     ports:
       - 1433:1433
     environment:
@@ -35,13 +37,13 @@ services:
       - MSSQL_AGENT_ENABLED=true
   mongo:
     image: "mongo:7.0.0"
+    restart: always
     container_name: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: $MONGO_ROOT_PASSWORD
     ports:
       - "27017:27017"
-    restart: always
   mongo-express:
     image: mongo-express
     ports:
@@ -59,6 +61,7 @@ services:
       - mongo
   connect:
     image: quay.io/debezium/connect:${DEBEZIUM_VERSION}
+    restart: always
     ports:
       - 8083:8083
     links:
