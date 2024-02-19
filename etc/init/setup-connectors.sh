@@ -1,7 +1,7 @@
 #!/bin/bash
 # Wait for the Connect to start
-apt update
-apt install -y curl gettext
+#apt update
+#apt install -y curl gettext
 
 echo "Waiting for Connect to be ready"
 until curl -s http://connect:8083/ &> /dev/null
