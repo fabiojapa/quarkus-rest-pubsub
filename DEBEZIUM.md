@@ -25,6 +25,7 @@ GO
 docker compose -f docker-compose-sqlserver.yaml exec  mongo mongosh --username root --password example
 # list records to see if data is flowing from sql server
 use local
+db.products.find().sort({ts_ms:-1}).limit(1)
 db.products.find()
 it
 
